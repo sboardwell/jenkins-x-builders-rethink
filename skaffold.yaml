@@ -1,0 +1,279 @@
+apiVersion: skaffold/v1beta4
+kind: Config
+build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.DOCKER_ORG}}/{{.IMAGE_NAME}}:{{.VERSION}}"
+#  kaniko:
+#    buildContext:
+#      gcsBucket: jenkinsx-dev-skaffold-kaniko
+#    pullSecretName: kaniko-secret
+#    namespace: jx
+#    image: rawlingsj/executor:dev21
+#    cache:
+#      repo: jenkins-x-docker-registry.jx.svc.cluster.local:5000/builder-base
+#    dockerConfig:
+#      secretName: jenkins-docker-cfg
+#    flags:
+#    - --cache-dir=/workspace
+profiles:
+  - name: base
+    build:
+      artifacts:
+      - image: builder-slim
+        context: .
+        docker:
+          dockerfile: Dockerfile.slim
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-base-base
+            FROM_VERSION: 1
+      - image: builder-base
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-base-base
+            FROM_VERSION: 1
+  - name: nodejs
+    build:
+      artifacts:
+      - image: builder-nodejs
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-nodejs-base
+            FROM_VERSION: 1
+  - name: nodejs8x
+    build:
+      artifacts:
+      - image: builder-nodejs8x
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-nodejs8x-base
+            FROM_VERSION: 1
+  - name: nodejs10x
+    build:
+      artifacts:
+      - image: builder-nodejs10x
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-nodejs10x-base
+            FROM_VERSION: 1
+  - name: gradle
+    build:
+      artifacts:
+      - image: builder-gradle
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-gradle-base
+            FROM_VERSION: 1
+  - name: gradle4
+    build:
+      artifacts:
+      - image: builder-gradle4
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-gradle4-base
+            FROM_VERSION: 1
+  - name: gradle5
+    build:
+      artifacts:
+      - image: builder-gradle5
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-gradle5-base
+            FROM_VERSION: 1
+  - name: dotnet
+    build:
+      artifacts:
+      - image: builder-dotnet
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-dotnet-base
+            FROM_VERSION: 1
+  - name: maven-java11
+    build:
+      artifacts:
+      - image: builder-maven-java11
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-maven-java11-base
+            FROM_VERSION: 1
+  - name: maven-nodejs
+    build:
+      artifacts:
+      - image: builder-maven-nodejs
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-maven-nodejs-base
+            FROM_VERSION: 1
+  - name: aws-cdk
+    build:
+      artifacts:
+      - image: builder-aws-cdk
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-aws-cdk-base
+            FROM_VERSION: 1
+  - name: dlang
+    build:
+      artifacts:
+      - image: builder-dlang
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-dlang-base
+            FROM_VERSION: 1
+  - name: rust
+    build:
+      artifacts:
+      - image: builder-rust
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-rust-base
+            FROM_VERSION: 1
+  - name: go
+    build:
+      artifacts:
+      - image: builder-go
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-go-base
+            FROM_VERSION: 1
+  - name: go-maven
+    build:
+      artifacts:
+      - image: builder-go-maven
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-go-maven-base
+            FROM_VERSION: 1
+  - name: maven
+    build:
+      artifacts:
+      - image: builder-maven
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-maven-base
+            FROM_VERSION: 1
+  - name: maven-32
+    build:
+      artifacts:
+      - image: builder-maven-32
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-maven-32-base
+            FROM_VERSION: 1
+  - name: newman
+    build:
+      artifacts:
+      - image: builder-newman
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-newman-base
+            FROM_VERSION: 1
+  - name: python
+    build:
+      artifacts:
+      - image: builder-python
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-python-base
+            FROM_VERSION: 1
+  - name: python2
+    build:
+      artifacts:
+      - image: builder-python2
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-python2-base
+            FROM_VERSION: 1
+  - name: python37
+    build:
+      artifacts:
+      - image: builder-python37
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-python37-base
+            FROM_VERSION: 1
+  - name: scala
+    build:
+      artifacts:
+      - image: builder-scala
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-scala-base
+            FROM_VERSION: 1
+  - name: terraform
+    build:
+      artifacts:
+      - image: builder-terraform
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-terraform-base
+            FROM_VERSION: 1
+  - name: swift
+    build:
+      artifacts:
+      - image: builder-swift
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-swift-base
+            FROM_VERSION: 1
+  - name: ruby
+    build:
+      artifacts:
+      - image: builder-ruby
+        context: .
+        docker:
+          dockerfile: Dockerfile.full
+          buildArgs:
+            FROM_IMAGE: jenkinsxio/builder-ruby-base
+            FROM_VERSION: 1
+deploy:
+  kubectl:
+    manifests:

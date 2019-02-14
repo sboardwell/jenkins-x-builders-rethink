@@ -1,0 +1,9 @@
+.updatebot-repos
+
+# IntelliJ
+.idea/
+Dockerfile.full
+Dockerfile.slim
+build
+# logs
+*.log

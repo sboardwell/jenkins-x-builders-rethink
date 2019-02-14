@@ -1,0 +1,60 @@
+# Docker
+RUN curl -f https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION-ce.tgz | tar xvz && \
+  mv docker/docker /usr/bin/ && \
+  rm -rf docker
+
+# tiller - using a hacked version until 2.11.x
+RUN curl -f -L https://github.com/jstrachan/helm-tiller-release/releases/download/2.10.0/tiller.tar.gz -o tiller.tgz && \
+  tar xf tiller.tgz && \
+  chmod +x tiller && \
+  mv tiller /usr/bin/
+
+# gcloud
+RUN curl -f -L https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_VERSION}-linux-x86_64.tar.gz | tar xzv && \
+  mv google-cloud-sdk /usr/bin/
+ENV PATH=$PATH:/usr/bin/google-cloud-sdk/bin
+
+# install the docker credential plugin
+RUN gcloud components install docker-credential-gcr
+
+# exposecontroller
+RUN curl -f -L https://github.com/fabric8io/exposecontroller/releases/download/v$EXPOSECONTROLLER_VERSION/exposecontroller-linux-amd64 > exposecontroller && \
+  chmod +x exposecontroller && \
+  mv exposecontroller /usr/bin/
+
+# skaffold
+RUN curl -f -Lo skaffold https://storage.googleapis.com/skaffold/releases/v${SKAFFOLD_VERSION}/skaffold-linux-amd64 && \
+  chmod +x skaffold && \
+  mv skaffold /usr/bin
+
+# updatebot
+RUN curl -f  -o ./updatebot -L https://oss.sonatype.org/content/groups/public/io/jenkins/updatebot/updatebot/${UPDATEBOT_VERSION}/updatebot-${UPDATEBOT_VERSION}.jar && \
+  chmod +x updatebot && \
+  cp updatebot /usr/bin/ && \
+  rm -rf updatebot
+
+# draft
+RUN curl -f https://azuredraft.blob.core.windows.net/draft/draft-canary-linux-amd64.tar.gz  | tar xzv && \
+  mv linux-amd64/draft /usr/bin/ && \
+  rm -rf linux-amd64
+
+# aws ecr docker credential helper.
+# Currently using https://github.com/estahn/amazon-ecr-credential-helper as there are no releases yet in the main repo
+# Main repo issues tracking at https://github.com/awslabs/amazon-ecr-credential-helper/issues/80
+RUN mkdir ecr && \
+    curl -f -L https://github.com/estahn/amazon-ecr-credential-helper/releases/download/v0.1.1/amazon-ecr-credential-helper_0.1.1_linux_amd64.tar.gz | tar -xzv -C ./ecr/ && \
+    mv ecr/docker-credential-ecr-login /usr/bin/ && \
+    rm -rf ecr
+
+# ACR docker credential helper
+#??https://github.com/Azure/acr-docker-credential-helper
+RUN mkdir acr && \
+    curl -f -L https://aadacr.blob.core.windows.net/acr-docker-credential-helper/docker-credential-acr-linux-amd64.tar.gz | tar -xzv -C ./acr/ && \
+    mv acr/docker-credential-acr-linux /usr/bin/ && \
+    rm -rf acr
+    
+# reflex
+RUN curl -f -L https://github.com/ccojocar/reflex/releases/download/v${REFLEX_VERSION}/reflex_${REFLEX_VERSION}_linux_amd64.tar.gz | tar xzv && \
+  mv reflex /usr/bin/
+
+ENV PATH ${PATH}:/opt/google/chrome
